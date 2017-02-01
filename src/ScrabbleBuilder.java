@@ -25,6 +25,13 @@ public abstract class ScrabbleBuilder
     { for (int j = 0; j < 15; j++)
       { setOrdinarySquare(i,j,res); }
     }
+    
+    // set diagonals to dws:
+    for (int i = 0; i < 15; i++)
+    { setDoubleWS(i,i,res); 
+      setDoubleWS(i,14-i,res);
+    }
+    
     setDoubleLS(3,7,res); 
     setDoubleLS(11,7,res); 
     setDoubleLS(3,0,res); 
@@ -58,12 +65,6 @@ public abstract class ScrabbleBuilder
     { setTripleLS(x,1,res); 
       setTripleLS(x,13,res); 
     }  
-
-    // set diagonals to dws:
-    for (int i = 0; i < 15; i++)
-    { setDoubleWS(i,i,res); 
-      setDoubleWS(i,14-i,res);
-    }
 
     setTripleWS(0,0,res);
     setTripleWS(7,0,res);
@@ -164,7 +165,7 @@ class EnglishScrabbleBuilder
     addLetter('x',8,1);
     addLetter('y',4,2);
     addLetter('z',10,1);
-    // addLetter(' ',0,2);
+    addLetter(' ',0,2);
   }
 
   public static int getScore(char c)
@@ -173,61 +174,5 @@ class EnglishScrabbleBuilder
     if ((int) c > (int) 'z')
     { return 0; } 
     return scores[(int) c - (int) 'a']; 
-  } 
-}
- 
-
-class RussianScrabbleBuilder 
-    extends ScrabbleBuilder
-{ private static int[] scores = {1, 2, 2, 2, 1, 1, 5, 5, 1, 2, 5, 1, 1, 1, 1,
-                                 2, 2, 1, 1, 3, 4, 2, 4, 4, 4, 10, 10, 4, 5, 
-                                 3, 5, 5, 2}; 
-
-  public RussianScrabbleBuilder()
-  { super();
-    addLetter('\u0644','a',1,12);  // a  0430
-    addLetter('\u0431','b',2,4);  // b
-    addLetter('\u0432','v',2,4);  // v
-    addLetter('\u0433','g',2,4);  // gamma
-    addLetter('\u0434','d',1,4);  // delta
-    addLetter('\u0435','e',1,12);  // e
-    addLetter('\u0436','j',5,3);  // zh
-    addLetter('\u0437','z',5,4);  // z
-    addLetter('\u0438','i',1,8);  // i
-    addLetter('\u0439','y',2,6);  // y
-    addLetter('\u043A','k',5,4);  // k
-    addLetter('\u043B','l',1,7);  // l
-    addLetter('\u043C','m',1,5);  // m
-    addLetter('\u043D','n',1,5);  // n
-    addLetter('\u043E','o',1,12);  // o
-    addLetter('\u043F','p',2,3);  // p
-    addLetter('\u0440','r',2,4);  // r
-    addLetter('\u0441','s',1,6);  // s
-    addLetter('\u0442','t',1,6);  // t
-    addLetter('\u0443','u',3,3);  // u
-    addLetter('\u0444','f',4,2);  // f
-    addLetter('\u0445','x',2,4);  // x
-    addLetter('\u0446',';',4,2);  // ts
-    addLetter('\u0447','h',4,2);  // ch
-    addLetter('\u0448','#',4,2);  // sh
-    addLetter('\u0449','%',10,1); // shch
-    addLetter('\u044A','>',10,1);  // hrd
-    addLetter('\u044B','q',4,4);  // yeru
-    addLetter('\u044C','<',5,3); // sft
-    addLetter('\u044D','-',3,4);  // eta
-    addLetter('\u044E','w',5,2);  // yu
-    addLetter('\u044F','~',5,3);  // ya
-    addLetter('\u0451',':',4,2);  // yo
-    // addLetter(' ',0,2);
-  }
-
-  public static int getScore(char c)
-  { if ((int) c == (int) '\u0451')
-    { return 2; } 
-    if ((int) c < (int) '\u0430') 
-    { return 0; }
-    if ((int) c > (int) '\u044F')
-    { return 0; } 
-    return scores[(int) c - (int) '\u0430']; 
   } 
 }

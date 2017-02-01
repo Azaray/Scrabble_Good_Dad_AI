@@ -54,11 +54,9 @@ public class Scrabble extends
   List history = new ArrayList(); // of Move
   static ScrabbleBuilder builder; 
 
-  public Scrabble(String lang)
-  { if (lang.equals("russian"))
-    { builder = new RussianScrabbleBuilder(); }
-    else 
-    { builder = new EnglishScrabbleBuilder(); } 
+  public Scrabble(String lang) {
+	
+	builder = new EnglishScrabbleBuilder();
 
     g = new Game(builder);
 
@@ -328,7 +326,7 @@ public class Scrabble extends
     { window = new Scrabble(args[0]); } 
   
     window.setTitle("Scrabble Game"); 
-    window.setSize(800, 500);
+    window.setSize(1000, 800);
     window.setVisible(true);   
   }
 }
