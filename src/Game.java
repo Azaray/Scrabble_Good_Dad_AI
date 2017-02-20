@@ -46,6 +46,10 @@ public class Game
                          " Score = " + p.getScore());
     }
   }
+  
+  public int getTurn(){
+	  return turn;
+  }
 
   public int getBagSize()
   { return bag.getSize(); } 
@@ -70,37 +74,20 @@ public class Game
   public void placeLetter(Letter l, int x, int y)
   { board.placeLetter(l,x,y); } 
 
-  public void playMove()
-  { // turn player selects letters from bag and moves
-    Player p = (Player) players.get(turn);
-    Rack r = p.getRack();
-    List selection = bag.giveLetters(7 - r.rackSize());
-    r.addLetters(selection);
-    Move m = p.doMove(board);
-    Board b = (Board) board.clone(); 
-    b.placeMove(m,board); 
-    m.findWords(b);
-    System.out.println(m.getLetterMoves()); 
-    System.out.println(m.getWords()); 
-    if (board.validateMove(m,moveNumber))
-    { int s = m.getScore(board); 
-      board.placeMove(m,board);
-      System.out.println("Valid move, score is: " + s);
-      p.addScore(s); 
-      r.removeLetters(m.getLetters());
-    }
-    else
-    { System.out.println("Invalid move, you lost a turn"); }
-    turn = (turn + 1) % players.size(); 
-    moveNumber++; 
-  }
-
   public void startMove()
   { // turn player selects letters from bag
-    Player p = (Player) players.get(turn);
+    Player p = (Player) players.get(getTurn());
     Rack r = p.getRack();
-    List selection = bag.giveLetters(7 - r.rackSize());
-    r.addLetters(selection);
+    if(!bag.isEmpty()){
+    	if(!(r.spaceLeft() >= bag.getSize())){ // check if there is more space in rack than letters in bag to avoid null pointer
+    		List selection = bag.giveLetters(r.spaceLeft());
+    		r.addLetters(selection);
+    	}
+    	else { // else add the rest of the bag contents into current players rack
+    		List selection = bag.giveLetters(bag.getSize());
+    		r.addLetters(selection);
+    	}
+    }
   }
 
   public void endMove(Move m)
@@ -109,28 +96,29 @@ public class Game
     Player p = (Player) players.get(turn);
     Rack r = p.getRack();
 
-    if (board.validateMove(m,moveNumber))
-    { if (moveNumber == 1 || b.placeMove(m,board))
-      { if (moveNumber == 1 || m.findWords(b))
-        { m.clearWords(); 
-          board.placeMove(m,board); 
-          m.findWords(board);
-          System.out.println("Letter moves are: " + m.getLetterMoves()); 
-          System.out.println("All words are: " + m.getWords()); 
-          m.inDictionary0(); 
-          int s = m.getScore(b2); 
-          System.out.println("Valid move, score is: " + s);
-          p.addScore(s); 
-          r.removeLetters(m.getLetters());
+    if (moveNumber == 1 || b.placeMove(m,board)) {
+       if (moveNumber == 1 || m.findWords(b)) {
+         if(m.inDictionary0()){         	
+      	  	m.clearWords();  
+      	  	board.placeMove(m,board);
+            m.findWords(board);
+            System.out.println("Letter moves are: " + m.getLetterMoves()); 
+            System.out.println("All words are: " + m.getWords()); 	
+            int s = m.getScore(b2);
+            System.out.println("Valid move, score is: " + s);
+            p.addScore(s); 
+            r.removeLetters(m.getLetters());
+            }
+            else {
+            m.inDictionary0();
+          	System.out.println("Invalid words, you lost a turn");
+            }
         }
         else 
         { System.out.println("Invalid move, you lost a turn"); } 
       }
       else 
-      { System.out.println("Invalid move, you lost a turn"); }
-    }
-    else 
-    { System.out.println("Invalid move, you lost a turn"); }
+      { System.out.println("Invalid move, you lost a turn"); }    
     turn = (turn + 1) % players.size(); 
     moveNumber++; 
   }

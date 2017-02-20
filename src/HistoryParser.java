@@ -150,12 +150,11 @@ public class HistoryParser
   }
 
   public static void main(String[] args)
-  { File file;
-      // = new File("out.dat");  /* default */ 
+  { File file = new File("out.dat");  /* default */ 
     try 
     { HistoryParser hp = new HistoryParser(); 
 
-    /*  File startingpoint = new File("output");
+      File startingpoint = new File("output");
       JFileChooser fc = new JFileChooser();
       fc.setCurrentDirectory(startingpoint);
       fc.setDialogTitle("Load data");
@@ -167,7 +166,7 @@ public class HistoryParser
       else
       { System.err.println("Load aborted");
         return; 
-      } */ 
+      }  
       System.out.println(hp.parse("output/out.dat")); 
     } catch (Exception e) { System.err.println("Load aborted"); } 
   } 

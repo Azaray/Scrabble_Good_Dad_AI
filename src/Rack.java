@@ -17,6 +17,10 @@ public class Rack
 
   public int rackSize()
   { return letters.size(); }
+  
+  public int spaceLeft(){
+	  return 7-letters.size();
+  }
 
   public Letter getLetter(int i)
   { return (Letter) letters.get(i); }

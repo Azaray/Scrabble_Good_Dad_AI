@@ -88,35 +88,6 @@ public class Move
     return new Move(pl,moves);
   }
 
-  public boolean validateMove(int numb) // numb of moves
-  { // all must be in line
-    boolean res = true; 
-    Set xcoords = new TreeSet();
-    Set ycoords = new TreeSet();
-    for (int i = 0; i < letterMoves.size(); i++)
-    { LetterMove lm = (LetterMove) letterMoves.get(i);
-      xcoords.add(new Integer(lm.getX()));
-      ycoords.add(new Integer(lm.getY()));
-      if (xcoords.size() > 1 &&
-          ycoords.size() > 1)  // error
-      { return false; }
-    }
-    if (numb == 1) // must contain 7,7 location
-    { Integer seven = new Integer(7);
-      if (xcoords.contains(seven) &&
-          ycoords.contains(seven))
-      { res = true; }
-      else 
-      { res = false; }
-    }                                     
-    for (int i = 0; i < words.size(); i++)
-    { Word wd = (Word) words.get(i); 
-      boolean res1 = Dictionary.lookup(wd); 
-      System.out.println("Word " + wd + " in dictionary: " + res1);
-      // res = res && res1;  
-    } 
-    return res;
-  }
 
   public boolean inDictionary()
   { boolean res = true; 

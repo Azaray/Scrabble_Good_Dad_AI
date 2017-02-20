@@ -69,9 +69,6 @@ public class Board
            squares[x][y1].isOccupied();
   }
 
-  public boolean validateMove(Move m, int numb)
-  { return m.validateMove(numb); } // check each created word is valid
-
   public boolean placeMove(Move m, Board oldboard)
   { if (m == null) { return false; }
     List lms = m.getLetterMoves();
