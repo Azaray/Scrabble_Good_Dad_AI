@@ -24,6 +24,7 @@ public class Game
 
   public void addPlayer(String nme, String corh)
   { Player pl; 
+  	corh = corh.toUpperCase();
     if (corh != null && corh.equals("C"))
     { pl = new ComputerPlayer(nme); } 
     else 
@@ -74,7 +75,7 @@ public class Game
   public void placeLetter(Letter l, int x, int y)
   { board.placeLetter(l,x,y); } 
 
-  public void startMove()
+  public void refreshRack()
   { // turn player selects letters from bag
     Player p = (Player) players.get(getTurn());
     Rack r = p.getRack();
@@ -118,7 +119,8 @@ public class Game
         { System.out.println("Invalid move, you lost a turn"); } 
       }
       else 
-      { System.out.println("Invalid move, you lost a turn"); }    
+      { System.out.println("Invalid move, you lost a turn"); }
+    refreshRack();
     turn = (turn + 1) % players.size(); 
     moveNumber++; 
   }

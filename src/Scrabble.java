@@ -217,7 +217,7 @@ public class Scrabble extends
           return; 
         }
         if (command.equals("Move"))
-        { g.startMove();
+        { g.refreshRack();
           Player pl = g.getPlayer(); 
           currentMove = new Move(pl);  
           // g.display();

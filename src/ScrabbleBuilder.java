@@ -165,7 +165,7 @@ class EnglishScrabbleBuilder
     addLetter('x',8,1);
     addLetter('y',4,2);
     addLetter('z',10,1);
-    addLetter(' ',0,2);
+    //addLetter(' ',0,2);
   }
 
   public static int getScore(char c)
