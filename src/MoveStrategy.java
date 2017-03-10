@@ -368,8 +368,8 @@ class PremiumMoveStrategy extends MoveStrategy
 
 class CompositeMoveStrategy extends MoveStrategy
 { // try Premium first, then Suffix, etc
-  public Move generateMove(Game g)
-  { PremiumMoveStrategy pms = new PremiumMoveStrategy(); 
+  public Move generateMove(Game g) {
+    PremiumMoveStrategy pms = new PremiumMoveStrategy(); 
     Move res1 = pms.generateMove(g); 
     if (res1 == null)
     { Rack r = g.getRack(); 

@@ -71,14 +71,7 @@ public class Scrabble extends
     getContentPane().add(resultsPanel, BorderLayout.EAST); 
     updateDisplay(); 
     Dictionary.loadFromFile(lang); 
-//    System.out.println(dictionary.toString()); 
-
-    addWindowListener(new WindowAdapter() 
-      { public void windowClosing(WindowEvent e) 
-        { saveDataToFile(); 
-          System.exit(0);
-        }
-      });    
+//    System.out.println(dictionary.toString());    
   }
     
 
