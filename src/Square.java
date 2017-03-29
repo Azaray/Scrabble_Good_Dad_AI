@@ -1,4 +1,6 @@
+
 import javax.swing.*;
+
 import java.awt.*;
 
 public abstract class Square
@@ -75,11 +77,55 @@ public abstract class Square
 
   public abstract Object clone(); 
 }
+class AnchorSquare extends Square { 
+	public AnchorSquare(Letter l) {
+}
+   
 
+  public AnchorSquare()
+  { super(); }
 
-class OrdinarySquare extends Square
-{ public OrdinarySquare(Letter l)
-  { super(l); } 
+  public AnchorSquare(int xx, int yy) {
+   super(xx,yy); 
+   }
+
+@Override
+public int getLetterScore(Letter l) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int getWordScore() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public String squareSymbol() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public Color getColor() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public Object clone() {
+	// TODO Auto-generated method stub
+	return null;
+} 
+  }
+  
+  
+class OrdinarySquare extends Square {
+  private Color darkGreen = new Color(0, 102, 0);  
+
+  public OrdinarySquare(Letter l) {
+   super(l); } 
 
   public OrdinarySquare()
   { super(); }
@@ -104,7 +150,7 @@ class OrdinarySquare extends Square
   { return "-"; }
 
   public Color getColor()
-  { return Color.green; } 
+  { return darkGreen; } 
 }
 
 

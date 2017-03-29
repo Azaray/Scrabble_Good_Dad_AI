@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 public class Word
@@ -18,10 +19,14 @@ public class Word
     endy = y2;
   }
 
-  public Word(int x1,int y1,int x2,int y2, String s)
-  { this(x1,y1,x2,y2); 
-    for (int i = 0; i < s.length(); i++)
-    { char c = s.toLowerCase().charAt(i); 
+  public Word(int x1,int y1,int x2,int y2, String s) {
+  	startx = x1;
+  	starty = y1;
+  	endx = x2;
+  	endy = y2;
+  	
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.toLowerCase().charAt(i); 
       Letter lett = (Letter) Scrabble.builder.getLetter(c).clone(); 
       letters.add(lett); 
     }
@@ -60,7 +65,7 @@ public class Word
   public boolean isHorizontal()
   { return starty == endy; } 
 
-  private Square getSquare(int i, Board b)
+  public Square getSquare(int i, Board b)
   { if (isVertical())
     { return b.getSquare(startx,starty+i); } 
     return b.getSquare(startx+i,starty); 
@@ -137,7 +142,7 @@ public class Word
     { return allHorizLetters(rackletters,disp); } 
   } 
 
-  private List allVerticalLetters(List rletters, int disp)
+  public List allVerticalLetters(List rletters, int disp)
   { if (disp + starty > endy) { return null; } 
     if (disp > premium) { return null; } 
     boolean found = false; 
@@ -185,7 +190,7 @@ public class Word
     return res; 
   }     
 
-  private List allHorizLetters(List rletters, int disp)
+  public List allHorizLetters(List rletters, int disp)
   { if (disp + startx > endx) { return null; } 
     if (disp > premium) { return null; } 
     boolean found = false; 

@@ -1,13 +1,4 @@
-/* Deserialize DAWG class
- * Jolie Nazor and Kristi Yost
- * December 9, 2013
- * Dr. Ravikumar
- * CS 454 - Theory of Computation
- * Semester Project: Scrabble
- *
- * Description:  This class opens a serialized DAWG class to create a DAWG object.
- *				 The DAWG object can be returned by this class.
- */
+
 
 
 
@@ -22,19 +13,19 @@ import java.io.*;
 
 
 
-public class DeserialDAWG {
+public class DeserialDAWG{
 
-	Map<String, DAWG> dawgs = new HashMap<String, DAWG>();
+	Map<Character, DAWG> dawgs = new HashMap<Character, DAWG>();
 	
 
 	// DeserializeDAWG constructor - deserialize a DAWG serialized file.
 	public DeserialDAWG() {
 	
-	String[] alphabet = { "A", "B", "C", "D", "E",
-             "F", "G", "H", "I", "J",
-             "K", "L", "M", "N", "O",
-             "P", "Q", "R", "S", "T",
-             "U", "V", "W", "X", "Y"};	
+	Character[] alphabet = { 'A', 'B', 'C', 'D', 'E',
+             'F', 'G', 'H', 'I', 'J',
+             'K', 'L', 'M', 'N', 'O',
+             'P', 'Q', 'R', 'S', 'T',
+             'U', 'V', 'W', 'X', 'Y'};	
 	
 	
 		try {
@@ -60,7 +51,7 @@ public class DeserialDAWG {
 	
 	
 	
-	// getDAWG - returns the DAWG data member object "playerDAWG".
+	// getDAWG - returns the DAWG data member object "dawgs".
 	public Map getDawgs() {
 		return dawgs;
 	}
@@ -69,9 +60,7 @@ public class DeserialDAWG {
 	public static void main(String[] args) {
 	
 		DeserialDAWG myTest = new DeserialDAWG();
-		((DAWG) myTest.getDawgs().get("Q")).printDAWG_Nodes();
-		((DAWG) myTest.getDawgs().get("Y")).printDAWG_Nodes();
-		((DAWG) myTest.getDawgs().get("X")).printDAWG_Nodes();
+		System.out.println(((DAWG) myTest.getDawgs().get('I')).containsWord("inside"));
 	}
 
 }

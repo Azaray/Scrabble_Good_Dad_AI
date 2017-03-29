@@ -1,7 +1,8 @@
+
 import java.util.*;
 
 public class Rack
-{ private List letters = new ArrayList(); // of Letter
+{ private ArrayList<Letter> letters = new ArrayList<Letter>(); // of Letter
       
   public void addLetters(List l)
   { letters.addAll(l); }  // highest scorers first
@@ -21,7 +22,21 @@ public class Rack
   public int spaceLeft(){
 	  return 7-letters.size();
   }
-
+  
+  public ArrayList<Letter> getRack() {
+	  return letters;
+  }
+  
+  public ArrayList<Letter> uniqueLetters() {
+	ArrayList<Letter> unique = new ArrayList<Letter>();
+	for(int i = 0; i < rackSize(); i++){
+		if(!unique.contains(this.getRack().get(i))){
+			unique.add(this.getRack().get(i));
+		}
+	}
+	return unique;	  
+  }
+  
   public Letter getLetter(int i)
   { return (Letter) letters.get(i); }
 

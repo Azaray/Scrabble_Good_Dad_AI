@@ -1,4 +1,7 @@
 
+import java.util.List;
+
+
 public class Letter // implements Comparable
 { private char symbol;
   private char ascii; 
@@ -20,6 +23,10 @@ public class Letter // implements Comparable
 
   public int getScore()
   { return score; }
+  
+  public char getChar(){
+	  return symbol;
+  }
 
   public String toString()
   { return "" + symbol; }

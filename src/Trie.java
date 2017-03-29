@@ -1,19 +1,4 @@
-/* Trie class
- * Base class taken from Wikipedia, "Trie" entry
- * 		The code has since been removed from the article.
- * Modified by Kristi Yost and Jolie Nazor
- * December 9, 2013
- * Dr. Ravikumar
- * CS 454 - Theory of Computation
- * Semester Project:  Scrabble
- * 
- * This takes in a dictionary and stores it in a Trie structure.
- * We have added the ability to minimize the Trie into a Vector of Vectors of Nodes,
- * and for this resulting Vector of Vectors of Nodes to be serialized into an output 
- * file.
- *
- * All comments were added by Kristi Yost and Jolie Nazor
- */
+
 
 import java.util.*;
 import java.io.*;

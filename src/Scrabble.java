@@ -1,19 +1,10 @@
-/*
- * Classname : Scrabble
- * 
- * Version information : 1
- *
- * Date :
- * 
- * Description : This describes the GUI interface of 
- * the Scrabble game,
- * which includes a simple window, 
- * the menu options and their action 
- * listeners.
- */
+
 
 import javax.swing.*;
 import javax.swing.event.*;
+
+
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector; 
@@ -53,6 +44,8 @@ public class Scrabble extends
   int numberOfPlayers = 0;
   List history = new ArrayList(); // of Move
   static ScrabbleBuilder builder; 
+  CompositeMoveStrategy cms = new CompositeMoveStrategy(); 
+  KillerMoveStrategy kms = new KillerMoveStrategy();
 
   public Scrabble(String lang) {
 	
@@ -72,6 +65,12 @@ public class Scrabble extends
     updateDisplay(); 
     Dictionary.loadFromFile(lang); 
 //    System.out.println(dictionary.toString());    
+    
+    addWindowListener(new WindowAdapter() { 
+        public void windowClosing(WindowEvent e) { 
+        	System.exit(0);
+        }
+    });   
   }
     
 
@@ -219,12 +218,12 @@ public class Scrabble extends
           if (pl instanceof ComputerPlayer) 
           { Move mv = null; 
             if (history.size() == 0)
-            { FirstMoveStrategy ss = new FirstMoveStrategy(); 
-              mv = ss.generateMove(g); 
+            { FirstMoveStrategy fms = new FirstMoveStrategy(); 
+              mv = fms.generateMove(g); 
             }
             else 
-            { CompositeMoveStrategy pms = new CompositeMoveStrategy(); 
-              mv = pms.generateMove(g); 
+            { 
+              mv = cms.generateMove(g); 
             }
             if (mv != null)
             { g.endMove(mv);
@@ -237,7 +236,8 @@ public class Scrabble extends
           return; 
         }
         if (command.equals("Cancel"))
-        { updateDisplay();
+        { g.getBoard().transposeBoard();
+        	updateDisplay();
           currentMove = new Move(g.getPlayer());
           return;
         }

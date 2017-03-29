@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 public class Game
@@ -116,7 +117,7 @@ public class Game
             }
         }
         else 
-        { System.out.println("Invalid move, you lost a turn"); } 
+        { System.out.println("Invalid move, you lost a turn"); }
       }
       else 
       { System.out.println("Invalid move, you lost a turn"); }
@@ -127,5 +128,6 @@ public class Game
 
   public boolean gameEnded()
   { return bag.isEmpty(); }
+
 }
       

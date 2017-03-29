@@ -1,17 +1,4 @@
-/* DAWG Class and DAWG_Node Class
- * Jolie Nazor and Kristi Yost
- * December 9, 2013
- * Dr. Ravikumar
- * CS 454 - Theory of Computation
- * Semester Project: Scrabble
- * 
- * DAWG Class:
- * Takes in a vector containing vectors of Nodes.
- * Converts the vector to a DAWG and serializes it.
- *
- * DAWG_Node Class:
- * Each sub-vector taken in from the DAWG class is converted to a DAWG_Node.
- */
+
 
 import java.util.*;
 import java.io.*;

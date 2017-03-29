@@ -1,9 +1,11 @@
+
 import java.util.*;
 
 public class Board
 { private Square[][] squares = new Square[15][15];
   // Square[x][y] is square at this coordinate
-  private List allSquares = new ArrayList(); 
+  private List allSquares = new ArrayList();
+  private boolean trans = false;
 
   public Board(ScrabbleBuilder b)
   { // uses b to do layout -- mostly standard
@@ -13,6 +15,20 @@ public class Board
       { allSquares.add(squares[i][j]); }
     }
   }
+  
+public void transposeBoard() {
+	Square[][] temp = new Square[15][15];
+	for(int i = 0; i < 15; i++)
+		for(int j = 0; j < 15; j++)
+			temp[j][i] = squares[i][j];
+				
+		squares = temp;
+		trans = !trans;
+	}
+
+public boolean getTransposed() {
+	return trans;
+}
 
   public Board(Square[][] arr) 
   { squares = arr;
@@ -48,6 +64,10 @@ public class Board
 
   public boolean isOccupied(int i, int j)
   { return squares[i][j].isOccupied(); }
+  
+  public boolean isEmpty(int i, int j) {
+	  
+   return (squares[i][j].getLetter() == null); }
  
   public boolean occupiedAdjacent(int x, int y)
   { int x0 = x;

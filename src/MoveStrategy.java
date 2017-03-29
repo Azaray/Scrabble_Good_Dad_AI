@@ -1,7 +1,9 @@
+
 import java.util.List; 
 import java.util.ArrayList; 
 import java.util.Set; 
 import java.util.Iterator; 
+import java.util.Vector;
 
 public abstract class MoveStrategy
 { public abstract Move generateMove(Game g); 
@@ -51,6 +53,268 @@ public abstract class MoveStrategy
   } 
 } 
 
+class KillerMoveStrategy extends MoveStrategy {
+	
+	DeserialDAWG dawgs = new DeserialDAWG();
+	Game game;
+	Board b;
+	Rack r;
+	Vector<AnchorSquare> anchSquares;
+	Vector<AnchorSquare> tempSquares;
+	Vector<AnchorSquare> dontUseSquares;
+	
+	int tempWordTotal;
+	int maxScore; 
+    List maxLetters;
+	
+    int INFINITY = 10;
+	int preventInfinity = 0;
+	int preventChkbrdInfinity = 0;
+	int totalScore = 0;		
+	
+	@Override
+	public Move generateMove(Game g) {
+		
+		game = g;
+		r = game.getRack(); 
+	    b = game.getBoard();
+	    maxScore = 0; 
+	    maxLetters = null;
+		determineAnchorSquares(b);
+		tempSquares = new Vector<AnchorSquare>(anchSquares);
+		
+		int size = anchSquares.size();
+		String myString = new String();
+		
+		String tempLargWord = new String();
+		int tempLargScore = -1;
+		AnchorSquare tempAnch = new AnchorSquare();
+		AnchorSquare tempSquare = new AnchorSquare();
+		
+		String tempLargWord2 = new String();
+		int tempLargScore2;
+		AnchorSquare tempAnch2 = new AnchorSquare();
+		
+//		if(dontUseSquares.size() > 0)
+//			for(int q = 0; q < dontUseSquares.size(); q++)
+//				anchSquares.remove(dontUseSquares.get(q));
+		
+		int limit;
+		AnchorSquare temp_7 = new AnchorSquare();
+		
+		for(int i = 0; i < size; i++) {			
+			limit = findLimit(anchSquares.get(i), b);
+			temp_7.setX(anchSquares.get(i).getX());
+			temp_7.setY(anchSquares.get(i).getY() + 1);
+			tempWordTotal = 0;
+			for(int j = 0; j < r.uniqueLetters().size(); j++){
+				Character dawgKey = r.uniqueLetters().get(j).getChar();
+				dawgKey = Character.toUpperCase(dawgKey);
+				LeftPart(myString, ((DAWG) dawgs.getDawgs().get(dawgKey)).getRoot(), limit, temp_7, temp_7, dawgKey, false);
+			}
+		}
+		
+		for(int n = 0; n < size; n++) {
+			
+			limit = findLimit(anchSquares.get(n), b);
+			temp_7.setX(anchSquares.get(n).getX());
+			temp_7.setY(anchSquares.get(n).getY() + 1);
+			tempWordTotal = 0;
+			if(temp_7.getY() != 0 || temp_7.getY() != 14){
+				if(b.isEmpty(temp_7.getX(), temp_7.getY() + 1) && b.isEmpty(temp_7.getX(), temp_7.getY() - 1)){
+					for(int j = 0; j < r.uniqueLetters().size(); j++){
+						Character dawgKey = r.uniqueLetters().get(j).getChar();
+						Character.toUpperCase(dawgKey);
+						LeftPart(myString, ((DAWG) dawgs.getDawgs().get(dawgKey)).getRoot(), limit, temp_7, temp_7, dawgKey, false);
+					}
+				}
+			}
+		}
+		
+//		b.transposeBoard();
+//		
+//		determineAnchorSquares(b);
+//		size = anchSquares.size();
+//		myString = new String();
+//		
+////		if(dontUseSquares.size() > 0)
+////			for(int q = 0; q < dontUseSquares.size(); q++)
+////				anchSquares.remove(dontUseSquares.get(q));
+//		
+//		
+//		for(int m = 0; m < size; m++) {
+//		
+//			limit = findLimit(anchSquares.get(m), b);
+//			temp_7.setX(anchSquares.get(m).getX());
+//			temp_7.setY(anchSquares.get(m).getY());
+//			tempWordTotal = 0;
+//		
+//			for(int j = 0; j < r.uniqueLetters().size(); j++){
+//				Character dawgKey = r.uniqueLetters().get(j).getChar();
+//				Character.toUpperCase(dawgKey);
+//				LeftPart(myString, ((DAWG) dawgs.getDawgs().get(dawgKey)).getRoot(), limit, temp_7, temp_7, dawgKey, true);
+//			}
+//		}
+//		
+//		for(int n = 0; n < size; n++) {
+//		
+//			limit = findLimit(anchSquares.get(n), b);
+//			temp_7.setX(anchSquares.get(n).getX());
+//			temp_7.setY(anchSquares.get(n).getY() + 1);
+//			tempWordTotal = 0;
+//				
+//			if(temp_7.getY() != 0 || temp_7.getY() != 14){
+//				if(b.isEmpty(temp_7.getX(), temp_7.getY() + 1) && b.isEmpty(temp_7.getX(), temp_7.getY() - 1)){
+//					for(int j = 0; j < r.uniqueLetters().size(); j++){
+//						Character dawgKey = r.uniqueLetters().get(j).getChar();
+//						Character.toUpperCase(dawgKey);
+//						LeftPart(myString, ((DAWG) dawgs.getDawgs().get(dawgKey)).getRoot(), limit, temp_7, temp_7, dawgKey, true);
+//					}
+//				}
+//			}
+//		}
+		
+		myString = new String();
+		return new Move(g.getPlayer(),maxLetters);
+		
+	}
+	
+	public void determineAnchorSquares(Board b) {
+		
+		anchSquares = new Vector<AnchorSquare>();
+		
+		if(anchSquares.size() > 0){
+			System.out.println(anchSquares.size());
+			anchSquares.clear();
+		}
+				
+		for(int x = 0; x < 15; x++) {			
+			for(int y = 0; y < 15; y++) {				
+				if(!b.isEmpty(x, y) && y != 0) {
+					anchSquares.addElement(new AnchorSquare(x, y-1));				
+				}
+			}
+		}
+		for(int x = 0; x < 15; x++) {				
+			if(!b.isEmpty(x, 14)) {
+				anchSquares.addElement(new AnchorSquare(x, 14));				
+			}
+		}
+	}	
+
+
+	public int findLimit(AnchorSquare aSquare, Board b) {
+		int limit = 0;
+		int x = aSquare.getX();
+		int y = aSquare.getY();
+		
+		if(x == 0){
+			return 0;
+		}	
+			while (b.isEmpty(x,y)){
+				limit = limit + 1;
+				x = x - 1;
+				if(x == 0 && b.isEmpty(x,y)){
+					return limit + 1;
+					
+				}
+		
+			}	
+			return limit;
+	}
+	
+	public void LeftPart(String argString, DAWG_Node dNode, int limit, 
+			 AnchorSquare anchorSquare, AnchorSquare startWord, Character dawgKey, boolean trans) {
+			 
+		ExtendRight(argString, dNode, anchorSquare, anchorSquare, startWord, dawgKey, trans);
+		DAWG_Node new_node = new DAWG_Node(new Vector<Node>());
+		AnchorSquare next_square = new AnchorSquare();
+
+		if(limit > 0 && startWord.getX() != 0) {
+
+			Set<Character> childNodes = dNode.getChildren().keySet();
+
+			for(Character one : childNodes) {
+				for(int i=0; i < r.rackSize(); i++){
+					if(one.equals(r.getLetter(i).getChar())) {		
+						Letter current = r.getRack().remove(i);
+						new_node = dNode.getChild(one);
+						startWord.setX(startWord.getX() - 1);
+						startWord.setY(startWord.getY());
+						tempWordTotal = 0;
+						LeftPart((one + argString), new_node, limit-1, anchorSquare, startWord, dawgKey, trans);
+						r.getRack().add(current);
+					}
+				}
+			}
+		}
+	}
+	
+	public void ExtendRight(String argString, DAWG_Node dNode, AnchorSquare anchorSquare, 
+		    AnchorSquare newSquare, AnchorSquare startWord, Character dawgKey, boolean trans) {
+
+		DAWG_Node new_node = new DAWG_Node(new Vector<Node>());
+		AnchorSquare next_square = new AnchorSquare();
+		System.out.println("X: " + newSquare.getX());
+		System.out.println("Y: " + newSquare.getY());
+		if(b.isEmpty(newSquare.getX(), newSquare.getY())) {
+System.out.println("Contains word: " + ((DAWG) dawgs.getDawgs().get(dawgKey)).containsWord(argString));
+System.out.println("Dawg is Word: " + dNode.isWord());
+System.out.println(argString);
+			if(((DAWG) dawgs.getDawgs().get(dawgKey)).containsWord(argString) && dNode.isWord()) {
+
+				if( ((r.spaceLeft()) < argString.length()) 
+						&& (r.rackSize() < 7) && (argString.length() != 1)) {
+					
+					Word currentWord = new Word(startWord.getX(), startWord.getY(), newSquare.getX(), newSquare.getY(), argString);
+					List wordLetters = currentWord.fitsX(argString,startWord.getX());
+					Move mm = new Move(game.getPlayer(),wordLetters);
+                    Board bb = (Board) b.clone(); 
+                    if (bb.placeMove(mm,b)){
+                     mm.findWords(bb); 
+                       int score = mm.getScore(b); 
+                        if (score > maxScore){
+                         maxScore = score; 
+                        // maxmove = mm;
+                          maxLetters = wordLetters;
+                        }
+                      
+                    }
+				}
+			}
+
+			Set<Character> childNodes = dNode.getChildren().keySet();
+			if(newSquare.getX()!= 14){
+				for(Character one : childNodes) {
+					for(int i=0; i < r.rackSize(); i++){
+						if(one.equals(r.getLetter(i).getChar())) {
+	
+						Letter current = r.getRack().remove(i);
+						new_node = dNode.getChild(one);
+						next_square = new AnchorSquare(newSquare.getX() + 1, 
+									   newSquare.getY());
+									   
+						ExtendRight(argString + one, new_node, anchorSquare, 
+								next_square, startWord, dawgKey, trans);
+						r.getRack().add(current);
+						}
+					}
+				}
+			}
+		}
+		else {
+			Character letter = b.getSquare(newSquare.getX(), newSquare.getY()).getLetter().getChar();
+
+			if(dNode.getChild(letter) != null) {
+				next_square = new AnchorSquare(newSquare.getX() + 1, newSquare.getY());
+				ExtendRight(argString + letter, dNode.getChild(letter), anchorSquare, 
+						next_square, startWord, dawgKey, trans);
+			}		
+		}
+	}
+	
+}
+
 
 class PremiumMoveStrategy extends MoveStrategy
 { public Move generateMove(Game g)
@@ -95,20 +359,13 @@ class PremiumMoveStrategy extends MoveStrategy
     for (int i = 0; i < rsize; i++) 
     { letters.add("" + r.getLetter(i).toAscii()); }
 
-    System.out.println("Rack letters are: " + letters); 
-    if (letters.size() == 7)
-    { System.out.println("All 7-letter words from these are: " + 
-                         Dictionary.lookup(letters,7)); 
-    }  
-
+    System.out.println("Rack letters are: " + letters);
 
     letters.add(null); // dummy
     SublistIterator si = new SublistIterator(letters); 
 
     
     int maxscore = 0; 
-    Word maxword = null; 
-    // Move maxmove = null; 
     List maxletts = null; 
 
     do
@@ -217,6 +474,7 @@ class PremiumMoveStrategy extends MoveStrategy
                                        " from " + newstartx +  
                                        " With new: " + newletts + 
                                        " maxscore = " + maxscore);
+                          
                         }
                       } 
                     }
@@ -362,7 +620,7 @@ class PremiumMoveStrategy extends MoveStrategy
       w.setPremium(x - (j+1));  
       return w; 
     }    
-  }  
+  }
   
 }
 
@@ -377,7 +635,6 @@ class CompositeMoveStrategy extends MoveStrategy
       System.out.println("Sorry, I give up, you try!"); 
     } 
     return res1; 
-  } 
-} 
+  }
 
-/* also try to form 7-letter word and fit anywhere possible */ 
+} 
